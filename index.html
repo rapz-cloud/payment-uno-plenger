@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
-         :root {
+        
+        :root {
             --neon-blue: #00f3ff;
             --neon-pink: #ff00ff;
             --neon-purple: #bd00ff;
@@ -277,8 +278,8 @@
             border: 2px solid var(--neon-purple);
             box-shadow: 0 0 15px var(--neon-purple);
         }
-        /* Tombol Styling */
         
+        /* Tombol Styling */
         .btn {
             padding: 12px 25px;
             border: none;
@@ -433,8 +434,8 @@
             background: radial-gradient(circle, var(--neon-blue), transparent);
             animation-delay: -5s;
         }
-        /* Notifikasi salin */
         
+        /* Notifikasi salin */
         .copy-notification {
             position: fixed;
             top: 20px;
@@ -454,6 +455,29 @@
             transform: translateX(0);
         }
         
+        /* Music Player */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .music-control i {
+            font-size: 24px;
+            color: var(--neon-blue);
+        }
+        
         @keyframes pulse {
             0% {
                 box-shadow: 0 0 15px var(--neon-blue), inset 0 0 15px var(--neon-blue);
@@ -464,34 +488,24 @@
         }
         
         @keyframes flicker {
-            0%,
-            19%,
-            21%,
-            23%,
-            25%,
-            54%,
-            56%,
-            100% {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
                 text-shadow: 0 0 10px rgba(189, 0, 255, 0.5), 0 0 20px rgba(189, 0, 255, 0.3), 0 0 30px rgba(189, 0, 255, 0.2);
             }
-            20%,
-            24%,
-            55% {
+            20%, 24%, 55% {
                 text-shadow: none;
             }
         }
         
         @keyframes float {
-            0%,
-            100% {
+            0%, 100% {
                 transform: translate(0, 0) scale(1);
             }
             50% {
                 transform: translate(20px, -20px) scale(1.2);
             }
         }
-        /* Responsiveness */
         
+        /* Responsiveness */
         @media (max-width: 768px) {
             .main-title {
                 font-size: 2.5rem;
@@ -523,9 +537,16 @@
 </head>
 
 <body>
-    <audio id="bgMusic" loop muted>
-      <source src="Music.mp3" type="audio/mpeg">
+    <!-- Audio dengan autoplay -->
+    <audio id="bgMusic" loop autoplay>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3" type="audio/mpeg">
+        <source src="https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3" type="audio/ogg">
     </audio>
+
+    <!-- Tombol kontrol musik -->
+    <div class="music-control" id="musicControl">
+        <i class="fas fa-volume-up" id="musicIcon"></i>
+    </div>
 
     <div class="cyberpunk-grid"></div>
     <div class="cyberpunk-elements">
@@ -562,93 +583,125 @@
             <p class="quote">I've grown, what about you? Tsk, licking parasite.</p>
 
             <div class="payment-section">
-                <h2 class="section-title">PAYMENT METHODS
-                    <h2>
+                <h2 class="section-title">PAYMENT METHODS</h2>
 
-                        <div class="payment-methods">
-                            <!-- DANA -->
-                            <div class="payment-card">
-                                <h3 class="payment-title">DANA</h3>
-                                <div class="payment-details">
-                                    <div class="payment-info">0895-0790-7919</div>
-                                    <div>A/N AYU LESTARI</div>
-                                    <button class="btn btn-copy" data-number="089507907919">
-                            <i class="fas fa-copy"></i> Copy 
-                        </button>
-                                </div>
-                            </div>
-
-                            <!-- GOPAY -->
-                            <div class="payment-card">
-                                <h3 class="payment-title">GOPAY</h3>
-                                <div class="payment-details">
-                                    <div class="payment-info">0831-7229-9901</div>
-                                    <div>A/N RAPZ STORE</div>
-                                    <button class="btn btn-copy" data-number="083172299901">
-                            <i class="fas fa-copy"></i> Copy 
-                        </button>
-                                </div>
-                            </div <!-- QRIS -->
-                            <div class="payment-card">
-                                <h3 class="payment-title">QRIS</h3>
-                                <div class="payment-details">
-                                    <div class="qris-container">
-                                        <img src="https://c.termai.cc/i155/AXJZvl.jpg" alt="QRIS Payment" class="qris-img">
-                                        <button class="btn btn-download" id="downloadQRIS">
-                                <i class="fas fa-download"></i> Download QR
+                <div class="payment-methods">
+                    <!-- DANA -->
+                    <div class="payment-card">
+                        <h3 class="payment-title">DANA</h3>
+                        <div class="payment-details">
+                            <div class="payment-info">0895-0790-7919</div>
+                            <div>A/N AYU LESTARI</div>
+                            <button class="btn btn-copy" data-number="089507907919">
+                                <i class="fas fa-copy"></i> Copy 
                             </button>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+
+                    <!-- GOPAY -->
+                    <div class="payment-card">
+                        <h3 class="payment-title">GOPAY</h3>
+                        <div class="payment-details">
+                            <div class="payment-info">0831-7229-9901</div>
+                            <div>A/N RAPZ STORE</div>
+                            <button class="btn btn-copy" data-number="083172299901">
+                                <i class="fas fa-copy"></i> Copy 
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- QRIS -->
+                    <div class="payment-card">
+                        <h3 class="payment-title">QRIS</h3>
+                        <div class="payment-details">
+                            <div class="qris-container">
+                                <img src="https://c.termai.cc/i155/AXJZvl.jpg" alt="QRIS Payment" class="qris-img">
+                                <button class="btn btn-download" id="downloadQRIS">
+                                    <i class="fas fa-download"></i> Download QR
+                                </button>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="guide-container">
-                            <h3 class="guide-title"></h3>
-                            <div class="guide-steps">
-                                <div class="guide-step">
-                                    Pilih metode pembayaran yang ingin Anda gunakan (DANA, GOPAY, atau QRIS)
-                                </div>
-                                <div class="guide-step">
-                                    Transfer sesuai dengan jumlah pembayaran yang harus Anda bayarkan
-                                </div>
-                                <div class="guide-step">
-                                    Simpan bukti transfer yang valid (screenshot atau foto)
-                                </div>
-                                <div class="guide-step">
-                                    Kirim bukti transfer ke admin melalui WhatsApp atau media sosial yang tersedia
-                                </div>
-                                <div class="guide-step">
-                                    Tunggu konfirmasi dari admin bahwa pembayaran Anda telah diterima
-                                </div>
-                            </div>
+                <div class="guide-container">
+                    <h3 class="guide-title">PANDUAN PEMBAYARAN</h3>
+                    <div class="guide-steps">
+                        <div class="guide-step">
+                            Pilih metode pembayaran yang ingin Anda gunakan (DANA, GOPAY, atau QRIS)
                         </div>
+                        <div class="guide-step">
+                            Transfer sesuai dengan jumlah pembayaran yang harus Anda bayarkan
+                        </div>
+                        <div class="guide-step">
+                            Simpan bukti transfer yang valid (screenshot atau foto)
+                        </div>
+                        <div class="guide-step">
+                            Kirim bukti transfer ke admin melalui WhatsApp atau media sosial yang tersedia
+                        </div>
+                        <div class="guide-step">
+                            Tunggu konfirmasi dari admin bahwa pembayaran Anda telah diterima
+                        </div>
+                    </div>
+                </div>
 
-                        <div class="note-container">
-                            <h3 class="note-title">PENTING!</h3>
-                            <p class="note-text">JIKA TIDAK ADA BUKTI TRANSFER MAKA AKAN KU ANGGAP TIDAK ADA PEMBAYARAN.</p>
-                        </div>
+                <div class="note-container">
+                    <h3 class="note-title">PENTING!</h3>
+                    <p class="note-text">JIKA TIDAK ADA BUKTI TRANSFER MAKA AKAN KU ANGGAP TIDAK ADA PEMBAYARAN.</p>
+                </div>
             </div>
         </div>
 
         <script>
- 
-document.addEventListener('DOMContentLoaded', () => {
-    const music = document.getElementById('bgMusic');
-
-    if (!music) {
-        console.error('Audio bgMusic tidak ditemukan');
-        return;
-    }
-
-    const playMusicOnce = () => {
-        music.muted = false;
-        music.volume = 0.4; // opsional
-        music.play().catch(() => {});
-        document.removeEventListener('click', playMusicOnce);
-    };
-
-    document.addEventListener('click', playMusicOnce);
-});
+            // Fungsi untuk memutar musik secara otomatis dengan user interaction
+            document.addEventListener('DOMContentLoaded', function() {
+                const music = document.getElementById('bgMusic');
+                const musicControl = document.getElementById('musicControl');
+                const musicIcon = document.getElementById('musicIcon');
+                
+                // Coba putar musik dengan user interaction
+                const playMusic = () => {
+                    if (music) {
+                        music.volume = 0.3; // Volume lebih rendah
+                        const playPromise = music.play();
+                        
+                        if (playPromise !== undefined) {
+                            playPromise.then(() => {
+                                console.log('Musik berhasil diputar');
+                            }).catch(error => {
+                                console.log('Autoplay diblokir:', error);
+                                // Tampilkan pesan bahwa user harus mengklik untuk memutar
+                                musicControl.style.display = 'flex';
+                            });
+                        }
+                    }
+                };
+                
+                // Coba putar musik saat halaman dimuat
+                playMusic();
+                
+                // Atau coba putar setelah user berinteraksi dengan halaman
+                document.addEventListener('click', () => {
+                    if (music.paused) {
+                        playMusic();
+                    }
+                }, { once: true });
+                
+                // Kontrol musik untuk mute/unmute
+                let isMuted = false;
+                musicControl.addEventListener('click', () => {
+                    if (isMuted) {
+                        music.muted = false;
+                        musicIcon.className = 'fas fa-volume-up';
+                        musicControl.style.boxShadow = '0 0 10px var(--neon-blue)';
+                    } else {
+                        music.muted = true;
+                        musicIcon.className = 'fas fa-volume-mute';
+                        musicControl.style.boxShadow = '0 0 10px #ff0000';
+                    }
+                    isMuted = !isMuted;
+                });
+            });
 
             function createLightning() {
                 const title = document.querySelector('.main-title');
@@ -738,27 +791,74 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
-            // Fungsi untuk download gambar QRIS
-            document.getElementById('downloadQRIS').addEventListener('click', function() {
+            // Fungsi untuk download gambar QRIS yang diperbaiki
+            document.getElementById('downloadQRIS').addEventListener('click', async function() {
                 const qrImageUrl = 'https://c.termai.cc/i155/AXJZvl.jpg';
-
-                // Buat elemen anchor untuk download
-                const link = document.createElement('a');
-                link.href = qrImageUrl;
-                link.download = 'QRIS_RAPZ_STORE.jpg';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                // Ubah sementara teks tombol
-                const originalText = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-check"></i> QR Terdownload!';
-                this.style.background = 'linear-gradient(45deg, #00ff66, #00cc66)';
-
-                setTimeout(() => {
-                    this.innerHTML = originalText;
-                    this.style.background = 'linear-gradient(45deg, #ff00ff, #bd00ff)';
-                }, 2000);
+                
+                try {
+                    // Menggunakan fetch untuk mendapatkan gambar sebagai blob
+                    const response = await fetch(qrImageUrl);
+                    
+                    if (!response.ok) {
+                        throw new Error('Gagal mengambil gambar');
+                    }
+                    
+                    const blob = await response.blob();
+                    
+                    // Buat URL object dari blob
+                    const blobUrl = URL.createObjectURL(blob);
+                    
+                    // Buat elemen anchor untuk download
+                    const link = document.createElement('a');
+                    link.href = blobUrl;
+                    link.download = 'QRIS_RAPZ_STORE.jpg';
+                    
+                    // Tambahkan ke DOM, klik, dan hapus
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // Hapus URL object setelah digunakan
+                    setTimeout(() => {
+                        URL.revokeObjectURL(blobUrl);
+                    }, 100);
+                    
+                    // Ubah sementara teks tombol sebagai feedback
+                    const originalText = this.innerHTML;
+                    const originalBg = this.style.background;
+                    
+                    this.innerHTML = '<i class="fas fa-check"></i> Berhasil!';
+                    this.style.background = 'linear-gradient(45deg, #00ff66, #00cc66)';
+                    this.disabled = true;
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.style.background = originalBg;
+                        this.disabled = false;
+                    }, 2000);
+                    
+                } catch (error) {
+                    console.error('Error downloading image:', error);
+                    
+                    // Fallback untuk browser lama
+                    const link = document.createElement('a');
+                    link.href = qrImageUrl;
+                    link.download = 'QRIS_RAPZ_STORE.jpg';
+                    link.target = '_blank';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // Feedback
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-external-link-alt"></i> Buka di Tab Baru';
+                    this.style.background = 'linear-gradient(45deg, #ff9900, #ff6600)';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.style.background = 'linear-gradient(45deg, #ff00ff, #bd00ff)';
+                    }, 2000);
+                }
             });
         </script>
 </body>
