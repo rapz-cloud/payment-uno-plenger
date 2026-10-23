@@ -757,68 +757,54 @@
 
             // Fungsi untuk download gambar QRIS
             document.getElementById('downloadQRIS').addEventListener('click', async function() {
-                const qrImageUrl = 'https://cdn.phototourl.com/member/2026-10-23-a1fa5d4b-0a52-4993-9604-c49822ad0167.jpg';
-                const button = this;
-                const originalText = button.innerHTML;
+    const qrImageUrl = 'https://cdn.phototourl.com/member/2026-10-23-a1fa5d4b-0a52-4993-9604-c49822ad0167.jpg';
+    const button = this;
+    const originalText = button.innerHTML;
+    const originalBg = button.style.background;
 
-                try {
-                    // Ubah teks tombol menjadi loading
-                    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-                    button.disabled = true;
+    try {
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+        button.disabled = true;
 
-                    // Fetch gambar dari URL
-                    const response = await fetch(qrImageUrl);
-                    const blob = await response.blob();
-                    
-                    // Buat URL object untuk blob
-                    const blobUrl = URL.createObjectURL(blob);
-                    
-                    // Buat elemen anchor untuk download
-                    const link = document.createElement('a');
-                    link.href = blobUrl;
-                    link.download = 'QRIS_UNOO_PAYMENT.jpg';
-                    
-                    // Tambahkan link ke body dan trigger click
-                    document.body.appendChild(link);
-                    link.click();
-                    
-                    // Cleanup
-                    document.body.removeChild(link);
-                    URL.revokeObjectURL(blobUrl);
+        // Coba fetch dengan mode CORS
+        const response = await fetch(qrImageUrl, { mode: 'cors' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-                    // Tampilkan notifikasi
-                    showNotification('downloadNotification', '<i class="fas fa-check-circle"></i> QRIS berhasil didownload!');
+        const blob = await response.blob();
+        
+        // Validasi tipe file
+        if (!blob.type.startsWith('image/')) {
+            throw new Error('Bukan file gambar');
+        }
 
-                    // Ubah sementara teks tombol
-                    button.innerHTML = '<i class="fas fa-check"></i> Berhasil!';
-                    button.style.background = 'linear-gradient(45deg, #00ff66, #00cc66)';
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = 'QRIS_UNOO_PAYMENT.jpg';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(blobUrl);
 
-                    setTimeout(() => {
-                        button.innerHTML = originalText;
-                        button.style.background = 'linear-gradient(45deg, #ff00ff, #bd00ff)';
-                        button.disabled = false;
-                    }, 2000);
+        showNotification('downloadNotification', '<i class="fas fa-check-circle"></i> QRIS berhasil didownload!');
+        
+        button.innerHTML = '<i class="fas fa-check"></i> Berhasil!';
+        button.style.background = 'linear-gradient(45deg, #00ff66, #00cc66)';
 
-                } catch (error) {
-                    console.error('Error downloading image:', error);
-                    
-                    // Fallback method untuk browser yang tidak support fetch
-                    const fallbackLink = document.createElement('a');
-                    fallbackLink.href = qrImageUrl;
-                    fallbackLink.download = 'QRIS_UNOO_PAYMENT.jpg';
-                    fallbackLink.target = '_blank';
-                    
-                    document.body.appendChild(fallbackLink);
-                    fallbackLink.click();
-                    document.body.removeChild(fallbackLink);
+    } catch (error) {
+        console.warn('Fetch gagal, pakai fallback:', error);
 
-                    showNotification('downloadNotification', '<i class="fas fa-download"></i> QRIS terbuka di tab baru!');
-
-                    // Reset tombol
-                    button.innerHTML = originalText;
-                    button.disabled = false;
-                }
-            });
+        // Fallback: buka gambar di tab baru (karena CORS, download attr tidak akan jalan)
+        window.open(qrImageUrl, '_blank');
+        showNotification('downloadNotification', '<i class="fas fa-info-circle"></i> Gambar dibuka di tab baru. Klik kanan → Simpan Gambar.');
+    } finally {
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.style.background = originalBg || 'linear-gradient(45deg, #ff00ff, #bd00ff)';
+            button.disabled = false;
+        }, 2000);
+    }
+});
         </script>
 </body>
 
